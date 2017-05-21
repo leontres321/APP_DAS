@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="C:\Users\Leandro\Desktop\desktop\APP2\core\build\libs\core-1.0.jar"
+        jumboMode="false"
+        revision="25.0.2"
+        sha1="9444bf1b30f032f43e876587df790799a23d3b47">
+        <dex dex="C:\Users\Leandro\Desktop\desktop\APP2\android\build\intermediates\pre-dexed\debug\core-1.0_d1bcd307f1147590435e9a65ba243b39e1089ea2.jar" />
+    </item>
+
+</items>
