@@ -11,30 +11,36 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.TimerTask;
 
 public class MainGame extends ApplicationAdapter {
-    SpriteBatch batch;
-    Texture AvionJugador;
-    Texture Fondo;
-    Texture Bullet;
-    Texture enemigoVertical;
+    private SpriteBatch batch;
+    private Texture Fondo;
+    private Texture Bullet;
+    private Texture enemigoVertical;
+
+    private Texture sprites;
+    private TextureRegion[] AvionJugador = new TextureRegion[3];
+    private TextureRegion[] ExplosionJugador = new TextureRegion[7];
+    private TextureRegion[] ExplosionEnemigoVertical = new TextureRegion[6];
     //Ver animacion de las balas
 
     private float Alto; //Height
     private float Ancho; //width
     private Random random = new Random(); //Posicion de los aviones, se supone
-    private int r;
+    private int r; //Quitar esto ya que solo sirve para el random
 
-    Vector2 AvionPos = new Vector2(0, 0);
+    private Vector2 AvionPos = new Vector2(0, 0);
 
     private float tiempo = 0f;
     private float tiempoEnemigo = 0f;
     private float balaE = 0f;
+    private int animacionAvion = 0; //Revisar si se puede eliminar alguna
+    private int ayuda = 0;
+    private boolean vivo = true;
 
-    ArrayList<Balas> BalasManager = new ArrayList<Balas>();
-    ArrayList<BalasEnemigos> BalasEManager = new ArrayList<BalasEnemigos>();
-    ArrayList<EnemigoVertical> EnemigoManager = new ArrayList<EnemigoVertical>();
+    private ArrayList<Balas> BalasManager = new ArrayList<Balas>();
+    private ArrayList<BalasEnemigos> BalasEManager = new ArrayList<BalasEnemigos>();
+    private ArrayList<EnemigoVertical> EnemigoManager = new ArrayList<EnemigoVertical>();
 
     @Override
     public void create() {
@@ -43,32 +49,108 @@ public class MainGame extends ApplicationAdapter {
 
         batch = new SpriteBatch();
 
-        AvionJugador = new Texture("Prueba.png");
         Fondo = new Texture("Fondo2.png"); //Hacerlo potencia de 2
         Bullet = new Texture("bullet.png");
         enemigoVertical = new Texture("Enemigo1.png");
 
+        sprites = new Texture("Sprites.png"); //todo men
+        //Sprites de AvionJugador
 
-        AvionPos = new Vector2(Ancho / 2 - AvionJugador.getWidth() / 2, 20);
+        int i;
+        int aux = 0;
+        for (i = 0; i < 3; i++){
+            AvionJugador[i] = new TextureRegion(sprites, aux , 396, 64, 64);
+            aux += 66;
+        }
+
+        aux = 0;
+        for (i = 0; i < 7; i++){
+            ExplosionJugador[i] = new TextureRegion(sprites, aux, 297, 64,64);
+            aux += 66;
+        }
+
+        aux = 66;
+        for (i = 0; i < 6; i++){
+            ExplosionEnemigoVertical[i] = new TextureRegion(sprites, aux, 165, 32, 32);
+            aux += 33;
+        }
+
+        AvionPos = new Vector2(Ancho / 2 - AvionJugador[0].getRegionWidth() / 2, 20);
     }
 
+    @Override
+    public void render() {
+        if (vivo){
+            update(); //Hace que el avion se mueva y revisa si se presiona el boton menu
+        }
 
-    public void update() {
+        //Tiempos para las balas y salida de enemigos
+        tiempo += Gdx.graphics.getDeltaTime();
+        tiempoEnemigo += Gdx.graphics.getDeltaTime();
+        balaE += Gdx.graphics.getDeltaTime(); // aun no se usa
+
+        if (tiempo >= 0.1f){
+            if (vivo){
+                Balas nueva = new Balas(AvionPos, new Vector2(0,20));
+                animacionAvion = (animacionAvion + 1 )%3;
+                BalasManager.add(nueva);
+            }
+            ayuda = (ayuda + 1) %7;
+            tiempo = 0f;
+        }
+
+        if (tiempoEnemigo >= 1f){ //Los aviones salen cada 2 segundos
+            r = random.nextInt((int)(Ancho-32)); //Cambiar esto a lo de parametros instantaneos
+            EnemigoVertical nuevo = new EnemigoVertical(new Vector2(r,Alto+32),new Vector2(0,15));
+            EnemigoManager.add(nuevo);
+            tiempoEnemigo = 0f;
+        }
+
+        //Limpiado de pantalla
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        //Dibujar en la pantalla
+        batch.begin(); //Batch dibuja ensima por lo que el orden si importa
+        batch.draw(Fondo, 0, 0,Ancho,Alto);  //La x se debe ir moviendo
+        if (vivo){
+            batch.draw(AvionJugador[animacionAvion], AvionPos.x, AvionPos.y); //X,Y del avion asi que la x es estatica
+        }
+        else{
+            batch.draw(ExplosionJugador[ayuda], AvionPos.x, AvionPos.y);
+        }
+        moverEnemigo();
+        colisionVertical();
+        colisionJugador();
+        //Otros tipos de colision aca
+        balasJ();
+        batch.end();
+    }
+
+    @Override
+    public void dispose() {
+        batch.dispose();
+        Fondo.dispose();
+        Bullet.dispose();
+        enemigoVertical.dispose();
+
+        sprites.dispose(); //Este deberia ser el unico dispose
+
+    }
+
+    private void update() {
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            if(Gdx.input.getX() <= Ancho/2 && AvionPos.x >= 0 - AvionJugador.getWidth()/3){
+            if (Gdx.input.getX() <= Ancho / 2 && AvionPos.x >= 0 - AvionJugador[0].getRegionWidth() / 3) {
                 AvionPos.x -= 10;
             }
             //Aqui tiene que ir lo del menú
             /* Revisar si aca va de 0,0 izq inf o 0,0 izq superior
             if (Gdx.input.getX() >= Ancho - AnchoBoton && Gdx.input.getY() >= - AltoBoton){
-
             }*/
-            if(Gdx.input.getX() > Ancho/2 && AvionPos.x <= Ancho - 4*AvionJugador.getWidth()/5) {
+            if (Gdx.input.getX() > Ancho / 2 && AvionPos.x <= Ancho - 4 * AvionJugador[0].getRegionWidth() / 5) {
                 AvionPos.x += 10;
             }
         }
-
-
     }
 
     private void balasJ(){
@@ -109,37 +191,7 @@ public class MainGame extends ApplicationAdapter {
         }
     }
 
-    @Override
-    public void render() {
-        update(); //Hace que el avion se mueva y revisa si se presiona el boton menu
-
-        //Tiempos para las balas y salida de enemigos
-        tiempo += Gdx.graphics.getDeltaTime();
-        tiempoEnemigo += Gdx.graphics.getDeltaTime();
-        balaE += Gdx.graphics.getDeltaTime();
-
-        if (tiempo >= 0.1f){
-            Balas nueva = new Balas(AvionPos, new Vector2(0,20));
-            BalasManager.add(nueva);
-            tiempo = 0f;
-        }
-
-        if (tiempoEnemigo >= 1f){ //Los aviones salen cada 2 segundos
-            r = random.nextInt((int)(Ancho-32)); //Cambiar esto a lo de parametros instantaneos
-            EnemigoVertical nuevo = new EnemigoVertical(new Vector2(r,Alto+32),new Vector2(0,15));
-            EnemigoManager.add(nuevo);
-            tiempoEnemigo = 0f;
-        }
-
-        //Limpiado de pantalla
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        //Dibujar en la pantalla
-        batch.begin(); //Batch dibuja ensima por lo que el orden si importa
-        batch.draw(Fondo, 0, 0,Ancho,Alto);  //La x se debe ir moviendo
-        batch.draw(AvionJugador, AvionPos.x, AvionPos.y); //X,Y del avion asi que la x es estatica
-        moverEnemigo();
+    private void colisionVertical(){
         for(int i =0;i<BalasManager.size();i++) {
             BalasManager.get(i);
             for (int j=0;j<EnemigoManager.size();j++) {
@@ -149,20 +201,18 @@ public class MainGame extends ApplicationAdapter {
                         BalasManager.remove(i);
                     }
                 }
+
             }
         }
-        balasJ();
-        batch.end();
     }
 
+    private void colisionJugador(){
+        for (int i = 0; i < EnemigoManager.size(); i++){
 
-    @Override
-    public void dispose() {
-        batch.dispose();
-        Fondo.dispose();
-        Bullet.dispose();
-        enemigoVertical.dispose();
+                if ((EnemigoManager.get(i).posEnemigo.x >= AvionPos.x) && (EnemigoManager.get(i).posEnemigo.x <= AvionPos.x + 64) && (EnemigoManager.get(i).posEnemigo.y <= AvionPos.y + 64)  && (EnemigoManager.get(i).posEnemigo.y >= AvionPos.y)){
+                    vivo = false;
+                }
+        }
 
-        AvionJugador.dispose();
     }
 }
