@@ -8,5 +8,3 @@ Captura actual del juego:
 
 ![captura 21-05-17](https://cloud.githubusercontent.com/assets/28835972/26281872/798f3d22-3dda-11e7-8005-2b12c7ceba9c.PNG)
 
-
-** Al repositorio le fata la carpeta "android" completa, esto es porque no puedo subirla **
