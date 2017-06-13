@@ -1,0 +1,54 @@
+magia.png
+size: 646, 97
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+BalaEnemigo
+  rotate: false
+  xy: 0, 0
+  size: 64, 32
+  orig: 64, 32
+  offset: 0, 0
+  index: -1
+bullet
+  rotate: false
+  xy: 64, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+Enemigo001test_lineas
+  rotate: false
+  xy: 96, 0
+  size: 263, 32
+  orig: 263, 32
+  offset: 0, 0
+  index: -1
+enemigo002
+  rotate: false
+  xy: 359, 0
+  size: 95, 32
+  orig: 95, 32
+  offset: 0, 0
+  index: -1
+explosion
+  rotate: false
+  xy: 454, 0
+  size: 192, 32
+  orig: 192, 32
+  offset: 0, 0
+  index: -1
+ExplosionJugador
+  rotate: false
+  xy: 0, 32
+  size: 451, 64
+  orig: 451, 64
+  offset: 0, 0
+  index: -1
+Jugador_Animacion
+  rotate: false
+  xy: 451, 32
+  size: 195, 65
+  orig: 195, 65
+  offset: 0, 0
+  index: -1
