@@ -6,5 +6,9 @@ Defensa del árbol sagrado (DAS) es un juego shoot 'em up en proceso de creació
 
 Captura actual del juego:
 
-![captura 21-05-17](https://cloud.githubusercontent.com/assets/28835972/26281872/798f3d22-3dda-11e7-8005-2b12c7ceba9c.PNG)
+![captlura](https://user-images.githubusercontent.com/28835972/27072052-7cebe556-4ff5-11e7-9801-fd3dbbb8e2f9.PNG)
+
+El codigo del juego se cambio para utilizar cuerpos y poder manejar mejor colisiones y animaciones, ademas se le agrego un apartado para el puntaja del jugador.
+
+*** Aun no se sabe donde esta el árbol sagrado ***
 
