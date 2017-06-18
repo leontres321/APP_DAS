@@ -1,0 +1,82 @@
+Todo2.png
+size: 485, 159
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+avion_quieto
+  rotate: false
+  xy: 266, 35
+  size: 191, 45
+  orig: 195, 65
+  offset: 2, 8
+  index: -1
+BalaEnemigo
+  rotate: false
+  xy: 1, 1
+  size: 40, 9
+  orig: 64, 32
+  offset: 13, 11
+  index: -1
+Balas_Enemigo2
+  rotate: false
+  xy: 469, 82
+  size: 15, 76
+  orig: 32, 96
+  offset: 9, 11
+  index: -1
+bullet
+  rotate: false
+  xy: 64, 1
+  size: 11, 22
+  orig: 32, 32
+  offset: 10, 4
+  index: -1
+doble_balas
+  rotate: false
+  xy: 43, 1
+  size: 19, 18
+  orig: 32, 32
+  offset: 6, 7
+  index: -1
+Enemigo001test_lineas
+  rotate: false
+  xy: 1, 35
+  size: 263, 32
+  orig: 263, 32
+  offset: 0, 0
+  index: -1
+enemigo002
+  rotate: false
+  xy: 101, 1
+  size: 93, 32
+  orig: 95, 32
+  offset: 1, 0
+  index: -1
+explosion
+  rotate: false
+  xy: 196, 1
+  size: 183, 32
+  orig: 192, 32
+  offset: 9, 0
+  index: -1
+ExplosionJugador
+  rotate: false
+  xy: 1, 82
+  size: 438, 54
+  orig: 451, 64
+  offset: 5, 4
+  index: -1
+Mas_Balas
+  rotate: false
+  xy: 77, 1
+  size: 22, 29
+  orig: 32, 32
+  offset: 6, 1
+  index: -1
+Power_UP
+  rotate: false
+  xy: 441, 82
+  size: 26, 59
+  orig: 32, 64
+  offset: 3, 1
+  index: -1

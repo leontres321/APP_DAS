@@ -38,7 +38,7 @@ ADDED from C:\Users\Trevor\Desktop\Libgdx\APP\android\AndroidManifest.xml:9:5-24
 activity#com.mygdx.game.AndroidLauncher
 ADDED from C:\Users\Trevor\Desktop\Libgdx\APP\android\AndroidManifest.xml:14:9-23:20
 	android:screenOrientation
-		ADDED from C:\Users\Trevor\Desktop\Libgdx\APP\android\AndroidManifest.xml:17:13-56
+		ADDED from C:\Users\Trevor\Desktop\Libgdx\APP\android\AndroidManifest.xml:17:13-51
 	android:label
 		ADDED from C:\Users\Trevor\Desktop\Libgdx\APP\android\AndroidManifest.xml:16:13-45
 	android:configChanges
