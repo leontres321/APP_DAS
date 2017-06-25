@@ -8,11 +8,18 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -42,13 +49,13 @@ public class PlayScreen implements Screen {
     private Music music;
     public AssetManager manager;
 
-    public PlayScreen(MainGame juego, AssetManager manager1){
+    public PlayScreen(MainGame juego){
         this.game = juego;
         camaraGame = new OrthographicCamera();
         gamePort = new FitViewport(MainGame.V_Width / MainGame.PPM, MainGame.V_Height / MainGame.PPM, camaraGame); //Con esto matiene el ratio
         hud = new Hud(game.batch);
         mapLoader = new TmxMapLoader();
-        tiledMap = mapLoader.load("Stage2.tmx"); //El mapa hecho de tiles, el mapa es mas grande asi que hacer otro o recortar o algo asi
+        tiledMap = mapLoader.load("Stage.tmx"); //El mapa hecho de tiles, el mapa es mas grande asi que hacer otro o recortar o algo asi
         renderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / MainGame.PPM);
         camaraGame.position.set(gamePort.getWorldWidth()/2 , gamePort.getWorldHeight()/2, 0); //0 porque tiene x y z
         atlas = new TextureAtlas("Todo.txt");
@@ -58,8 +65,24 @@ public class PlayScreen implements Screen {
         avionJugador = new Jugador(world, this);
 
         world.setContactListener(new WorldContactListener());
-        manager = manager1;
+        manager = game.manager;
         //music = manager.get("Musica");
+
+        //Creacion de las paredes, lo deje aqui por ser poco codigo por el momento, mover a otro cuando sea más
+        BodyDef bodyDef = new BodyDef();
+        PolygonShape shape = new PolygonShape();
+        FixtureDef fdef = new FixtureDef();
+        Body body;
+
+        for (MapObject object : tiledMap.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)){
+            Rectangle rec = ((RectangleMapObject)object).getRectangle();
+            bodyDef.type = BodyDef.BodyType.StaticBody;
+            bodyDef.position.set((rec.getX() + rec.getWidth()/2) / MainGame.PPM, (rec.getY() + rec.getHeight()/2) / MainGame.PPM);
+            body = world.createBody(bodyDef);
+            shape.setAsBox((rec.getWidth()/2) / MainGame.PPM, (rec.getHeight()/2) / MainGame.PPM);
+            fdef.shape = shape;
+            body.createFixture(fdef);
+        }
     }
 
     public TextureAtlas getAtlas(){
@@ -68,34 +91,16 @@ public class PlayScreen implements Screen {
 
 
     //TODO VER POSIBILIDAD DE PONER OBJETOS TRANSPARENTES COMO BORDES Y HACER QUE LA WEA DE AVION NO SALGA DE LA PANTALLA
-    public void handleInput(float dt){//TESTT
-        System.out.println("X: "+ avionJugador.b2body.getPosition().x + " Y:" + avionJugador.b2body.getPosition().y);
-        //entre 0.3 y 5.algo X es la pantalla, esto debe estar en metros por box2d
-        //entre 0.5 y 29.5 Y es hasta donde deberia moverse la pantalla y quedar quieta para el boss o algo asi
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT) && avionJugador.b2body.getLinearVelocity().x>=-2){
-            avionJugador.b2body.applyLinearImpulse(new Vector2(-0.1f,0), avionJugador.b2body.getWorldCenter(), true);
+    public void handleInput(float dt){
+        if(avionJugador.b2body.getLinearVelocity().y <=1) {
+            avionJugador.b2body.applyLinearImpulse(new Vector2(0, 0.1f), avionJugador.b2body.getWorldCenter(), true);
         }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT) && avionJugador.b2body.getLinearVelocity().x<=2){
-            avionJugador.b2body.applyLinearImpulse(new Vector2(0.1f,0), avionJugador.b2body.getWorldCenter(), true);
-        }
-        //TODO VER SI ES EFECTIVAMENTE EL FINAL DEL MAPA
-        if(avionJugador.b2body.getPosition().y <= 25 && avionJugador.b2body.getLinearVelocity().y<=1){
-            avionJugador.b2body.applyLinearImpulse(new Vector2(0,0.1f), avionJugador.b2body.getWorldCenter(), true);
-        }
-        if(avionJugador.b2body.getPosition().y > 25) {
-            avionJugador.b2body.setLinearVelocity(0, 0); //Esto hace que la camara se detenga pero no puedes moverte
-        }
-        /* para test
-        if(Gdx.input.isKeyPressed(Input.Keys.UP) && avionJugador.b2body.getLinearVelocity().y<=2){
-            avionJugador.b2body.applyLinearImpulse(new Vector2(0,0.1f), avionJugador.b2body.getWorldCenter(), true);
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN) && avionJugador.b2body.getLinearVelocity().y >=-2){
-            avionJugador.b2body.applyLinearImpulse(new Vector2(0,-0.1f), avionJugador.b2body.getWorldCenter(), true);
-        }*/
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) && avionJugador.b2body.getLinearVelocity().x>=-2) {
-            if (Gdx.input.getX() < MainGame.V_Width && avionJugador.getWidth() /2  >= 0){
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            if (Gdx.input.getX() < MainGame.V_Width/2 && avionJugador.b2body.getLinearVelocity().x>=-2){
                 avionJugador.b2body.applyLinearImpulse(new Vector2(-0.1f,0), avionJugador.b2body.getWorldCenter(), true);
-                System.out.println("X: "+ Gdx.input.getX());
+            }
+            if(Gdx.input.getX() > MainGame.V_Width/2 && avionJugador.b2body.getLinearVelocity().x<=2){
+                avionJugador.b2body.applyLinearImpulse(new Vector2(0.1f,0), avionJugador.b2body.getWorldCenter(), true);
             }
         }
     }
@@ -109,13 +114,15 @@ public class PlayScreen implements Screen {
 
         world.step(1/60f, 6, 2); //60fps y los otros son weas que la documentacion menciona dejar asi pero igual se pueden cambiar
 
-        /*Test movimiento de camara, hay que poner algunos otros parametros como el inicio de la camara y el final
-        Si no se hace aca entonces que se haga con el mismo jugador*/
         camaraGame.position.y = avionJugador.b2body.getPosition().y+2; //esto arregla la camara al parecer
 
         camaraGame.update(); //update de la camarita
         renderer.setView(camaraGame); //solo renderisa lo que ve la camara
     }
+
+    public TiledMap getMap(){return tiledMap;}
+
+    public World getWorld(){return world;}
 
     @Override
     public void show() {
