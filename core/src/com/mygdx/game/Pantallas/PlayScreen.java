@@ -29,27 +29,32 @@ import com.mygdx.game.Scenas.Hud;
 import com.mygdx.game.Sprites.Jugador;
 
 public class PlayScreen implements Screen {
-
     private MainGame game;
 
+    //Camara y HUD
     private OrthographicCamera camaraGame;
     private Viewport gamePort; //Magia para diferences ratios de pantalla
     private Hud hud;
 
+    //MAPA
     private TmxMapLoader mapLoader;
     private TiledMap tiledMap;
     private OrthogonalTiledMapRenderer renderer;
     private TextureAtlas atlas;
 
+    //Mundo y Debug
     private World world;
     private Box2DDebugRenderer b2dr; //Muestra lineas para las colisiones
 
+    //Jugador y Enemigos?
     private Jugador avionJugador;
 
+    //Musica
     private Music music;
     public AssetManager manager;
 
     public PlayScreen(MainGame juego){
+        //Inicializacion de las variables
         this.game = juego;
         camaraGame = new OrthographicCamera();
         gamePort = new FitViewport(MainGame.V_Width / MainGame.PPM, MainGame.V_Height / MainGame.PPM, camaraGame); //Con esto matiene el ratio
@@ -60,10 +65,12 @@ public class PlayScreen implements Screen {
         camaraGame.position.set(gamePort.getWorldWidth()/2 , gamePort.getWorldHeight()/2, 0); //0 porque tiene x y z
         atlas = new TextureAtlas("Todo.txt");
 
+        //Creacion del mundo y debug
         world = new World(new Vector2(0,0),true); //true para objetos que no se mueven (sleep), no hace todos los calculos y ahorra calculos
         b2dr = new Box2DDebugRenderer();
         avionJugador = new Jugador(world, this);
 
+        //Para colisiones
         world.setContactListener(new WorldContactListener());
         manager = game.manager;
         //music = manager.get("Musica");
@@ -89,12 +96,13 @@ public class PlayScreen implements Screen {
         return atlas;
     }
 
-
-    //TODO VER POSIBILIDAD DE PONER OBJETOS TRANSPARENTES COMO BORDES Y HACER QUE LA WEA DE AVION NO SALGA DE LA PANTALLA
     public void handleInput(float dt){
+        //Movimiento automatico hacia arriba del mapa
         if(avionJugador.b2body.getLinearVelocity().y <=1) {
             avionJugador.b2body.applyLinearImpulse(new Vector2(0, 0.1f), avionJugador.b2body.getWorldCenter(), true);
         }
+
+        //Cuando se toca la pantalla pasa lo de aca
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             if (Gdx.input.getX() < MainGame.V_Width/2 && avionJugador.b2body.getLinearVelocity().x>=-2){
                 avionJugador.b2body.applyLinearImpulse(new Vector2(-0.1f,0), avionJugador.b2body.getWorldCenter(), true);
@@ -106,18 +114,24 @@ public class PlayScreen implements Screen {
     }
 
     public void update(float dt){
-        handleInput(dt); //ver si hay inputs
+        //Inputs del jugador
+        handleInput(dt);
 
+        //Subida de puntitos por el hecho de estar vivo
         if(avionJugador.vivo) hud.masPuntaje(1); //Puntaje por estar vivo para test y si se queda meh
 
+        //Update de la posicion del jugador
         avionJugador.update(dt);
 
-        world.step(1/60f, 6, 2); //60fps y los otros son weas que la documentacion menciona dejar asi pero igual se pueden cambiar
+        //Pasos del mundo (algo asi como fps)
+        world.step(1/60f, 6, 2);
 
-        camaraGame.position.y = avionJugador.b2body.getPosition().y+2; //esto arregla la camara al parecer
+        //Posicion de la camara, se mueve segun el jugador
+        camaraGame.position.y = avionJugador.b2body.getPosition().y+2;
 
-        camaraGame.update(); //update de la camarita
-        renderer.setView(camaraGame); //solo renderisa lo que ve la camara
+        //Update de la camara y renderisa lo que ve
+        camaraGame.update();
+        renderer.setView(camaraGame);
     }
 
     public TiledMap getMap(){return tiledMap;}

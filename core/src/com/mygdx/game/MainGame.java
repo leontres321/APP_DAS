@@ -17,12 +17,12 @@ public class MainGame extends Game {
 	@Override
 	public void create () {
         batch = new SpriteBatch();
-        setScreen(new PlayScreen(this, manager));
+        setScreen(new PlayScreen(this));
         manager = new AssetManager();
         //manager.load("Sonido/efectos/snd_explosion1.wav", Music.class);
-        manager.load("Sonido/efectos/snd_explosion1.wav", Sound.class);
-        manager.load("Sonido/efectos/snd_explosion2.wav", Sound.class);
-        manager.finishLoading();
+//        manager.load("Sonido/efectos/snd_explosion1.wav", Sound.class);
+  //      manager.load("Sonido/efectos/snd_explosion2.wav", Sound.class);
+    //    manager.finishLoading();
 	}
 
 	@Override

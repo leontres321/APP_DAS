@@ -12,7 +12,7 @@ import com.badlogic.gdx.utils.Array;
 import com.mygdx.game.MainGame;
 import com.mygdx.game.Pantallas.PlayScreen;
 
-public class Jugador extends Sprite { //meh no actor por el momento
+public class Jugador extends Sprite {
     public enum state {QUIETO, EXPLOSION, VACIO};
     public state actual;
     public state anterior;
@@ -56,11 +56,13 @@ public class Jugador extends Sprite { //meh no actor por el momento
 
     }
 
+    //Mueve el avion
     public void update(float dt){
         setPosition(b2body.getPosition().x-getWidth()/2, b2body.getPosition().y-getHeight()/2);
         setRegion(getFrame(dt));
     }
 
+    //Cambio de las animaciones del jugador
     public TextureRegion getFrame(float dt){
         actual = getState();
 
@@ -70,7 +72,7 @@ public class Jugador extends Sprite { //meh no actor por el momento
                 region = quieto.getKeyFrame(relojEstado, true); //true for loop
                 break;
             case VACIO:
-                region = new TextureRegion(); //Ver si funciona
+                region = new TextureRegion(); //todo Ver si funciona
                 break;
             default:
                 region = explosion.getKeyFrame(relojEstado);
@@ -81,12 +83,13 @@ public class Jugador extends Sprite { //meh no actor por el momento
         return region;
     }
 
+    //Entrega el estado del jugador
     public state getState(){
-        if (vivo) return state.QUIETO; //es la animacion de andar nomas
-        //Ver como meter VACIO POR ACA
-        return state.EXPLOSION; //muricio, ver como no hace na
+        if (vivo) return state.QUIETO;
+        return state.EXPLOSION;
     }
 
+    //Definicion del cuerpo en box2d y magia negra
     private void defineJugador(){
         BodyDef bdef = new BodyDef();
         bdef.position.set((MainGame.V_Width/2) / MainGame.PPM, 50/ MainGame.PPM); //temp
@@ -96,7 +99,7 @@ public class Jugador extends Sprite { //meh no actor por el momento
         CircleShape shape = new CircleShape();
         shape.setRadius(16 / MainGame.PPM);
         fdef.shape = shape;
-        b2body.createFixture(fdef); //definicion del cuerpo y emmm... no se que mas... magia negra
+        b2body.createFixture(fdef);
         b2body.createFixture(fdef).setUserData("Jugador");
     }
 }
