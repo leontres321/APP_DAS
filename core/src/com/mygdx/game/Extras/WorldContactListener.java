@@ -5,6 +5,10 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Manifold;
+import com.mygdx.game.MainGame;
+import com.mygdx.game.Sprites.Balas;
+import com.mygdx.game.Sprites.Jugador;
+import com.mygdx.game.Sprites.kamikaze;
 
 public class WorldContactListener implements ContactListener{
 
@@ -13,18 +17,30 @@ public class WorldContactListener implements ContactListener{
         Fixture fixA = contact.getFixtureA();
         Fixture fixB = contact.getFixtureB();
 
-        if(fixA.getUserData() == "Jugador "|| fixB.getUserData() == "Jugador"){
-            Fixture avion;
-            Fixture otro;
-            if (fixA.getUserData() == "Jugador"){
-                avion = fixA;
-                otro = fixB;
-            }
-            else{
-                avion = fixB;
-                otro = fixA;
-            }
+        int cDef = fixA.getFilterData().categoryBits | fixB.getFilterData().categoryBits;
 
+        //Con esto deberian ser suficientes
+        switch (cDef){
+            case MainGame.AVION_BIT | MainGame.KAMIKAZE_BIT:
+                if(fixA.getFilterData().categoryBits == MainGame.AVION_BIT){
+                    ((Jugador)fixA.getUserData()).setDestruida();
+                    ((kamikaze)fixB.getUserData()).setDestruida();
+                }
+                else{
+                    ((Jugador)fixB.getUserData()).setDestruida();
+                    ((kamikaze)fixA.getUserData()).setDestruida();
+                }
+                break;
+            case MainGame.BALA_BIT | MainGame.KAMIKAZE_BIT:
+                if(fixA.getFilterData().categoryBits == MainGame.BALA_BIT){
+                    ((Balas)fixA.getUserData()).setDestruida();
+                    ((kamikaze)fixB.getUserData()).setDestruida();
+                }
+                else{
+                    ((Balas)fixB.getUserData()).setDestruida();
+                    ((kamikaze)fixA.getUserData()).setDestruida();
+                }
+                break;
         }
     }
 

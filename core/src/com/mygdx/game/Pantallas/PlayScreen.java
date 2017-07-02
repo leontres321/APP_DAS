@@ -21,12 +21,17 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.mygdx.game.Extras.WorldContactListener;
 import com.mygdx.game.MainGame;
 import com.mygdx.game.Scenas.Hud;
+import com.mygdx.game.Sprites.Balas;
 import com.mygdx.game.Sprites.Jugador;
+import com.mygdx.game.Sprites.kamikaze;
+
+import java.util.ArrayList;
 
 public class PlayScreen implements Screen {
     private MainGame game;
@@ -48,8 +53,9 @@ public class PlayScreen implements Screen {
 
     //Jugador y Enemigos?
     private Jugador avionJugador;
+    private kamikaze enemigo;
 
-    //Musica
+    //"Musica"
     private Music music;
     public AssetManager manager;
 
@@ -75,7 +81,7 @@ public class PlayScreen implements Screen {
         manager = game.manager;
         //music = manager.get("Musica");
 
-        //Creacion de las paredes, lo deje aqui por ser poco codigo por el momento, mover a otro cuando sea más
+        //Creacion de las paredes, lo deje aqui por ser poco codigo por el momento, mover a otro si es mas
         BodyDef bodyDef = new BodyDef();
         PolygonShape shape = new PolygonShape();
         FixtureDef fdef = new FixtureDef();
@@ -87,9 +93,13 @@ public class PlayScreen implements Screen {
             bodyDef.position.set((rec.getX() + rec.getWidth()/2) / MainGame.PPM, (rec.getY() + rec.getHeight()/2) / MainGame.PPM);
             body = world.createBody(bodyDef);
             shape.setAsBox((rec.getWidth()/2) / MainGame.PPM, (rec.getHeight()/2) / MainGame.PPM);
+            fdef.filter.categoryBits = MainGame.MURALLA_BIT;
+            fdef.filter.maskBits = MainGame.AVION_BIT;
             fdef.shape = shape;
             body.createFixture(fdef);
         }
+
+        enemigo = new kamikaze(this, .32f, .32f);
     }
 
     public TextureAtlas getAtlas(){
@@ -99,16 +109,19 @@ public class PlayScreen implements Screen {
     public void handleInput(float dt){
         //Movimiento automatico hacia arriba del mapa
         if(avionJugador.b2body.getLinearVelocity().y <=1) {
-            avionJugador.b2body.applyLinearImpulse(new Vector2(0, 0.1f), avionJugador.b2body.getWorldCenter(), true);
+            //avionJugador.b2body.applyLinearImpulse(new Vector2(0, 0.1f), avionJugador.b2body.getWorldCenter(), true);
+            avionJugador.b2body.setLinearVelocity(new Vector2(0,1)); //Detiene el deslis de del avion
         }
 
         //Cuando se toca la pantalla pasa lo de aca
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             if (Gdx.input.getX() < MainGame.V_Width/2 && avionJugador.b2body.getLinearVelocity().x>=-2){
-                avionJugador.b2body.applyLinearImpulse(new Vector2(-0.1f,0), avionJugador.b2body.getWorldCenter(), true);
+                //avionJugador.b2body.applyLinearImpulse(new Vector2(-0.1f,0), avionJugador.b2body.getWorldCenter(), true);
+                avionJugador.b2body.setLinearVelocity(new Vector2(-2,1));
             }
             if(Gdx.input.getX() > MainGame.V_Width/2 && avionJugador.b2body.getLinearVelocity().x<=2){
-                avionJugador.b2body.applyLinearImpulse(new Vector2(0.1f,0), avionJugador.b2body.getWorldCenter(), true);
+                //avionJugador.b2body.applyLinearImpulse(new Vector2(0.1f,0), avionJugador.b2body.getWorldCenter(), true);
+                avionJugador.b2body.setLinearVelocity(new Vector2(2,1));
             }
         }
     }
@@ -122,6 +135,7 @@ public class PlayScreen implements Screen {
 
         //Update de la posicion del jugador
         avionJugador.update(dt);
+        enemigo.update(dt);
 
         //Pasos del mundo (algo asi como fps)
         world.step(1/60f, 6, 2);
@@ -161,6 +175,7 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(camaraGame.combined);
         game.batch.begin();
         avionJugador.draw(game.batch);
+        enemigo.draw(game.batch);
         game.batch.end();
 
         //Para dibujar el hud
