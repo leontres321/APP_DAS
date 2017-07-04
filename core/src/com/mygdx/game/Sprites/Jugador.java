@@ -85,7 +85,16 @@ public class Jugador extends Sprite {
         //Actualiza las balas y las elimina del array si mueren
         for(Balas bala : balasManager){
             bala.update(dt);
-            if(bala.getDestruida()) balasManager.removeValue(bala,true);
+            //parche
+            if (bala.b2body.getPosition().y - b2body.getPosition().y >= 4.5){
+                //Se podria dejar en 3 y luego tener un power up para alargar la distancia de disparo, pero lo vas a programar tu?
+                    bala.kill();
+                    balasManager.removeValue(bala,true);
+            }
+            if(bala.getDestruida()) {
+                bala.kill();
+                balasManager.removeValue(bala,true);
+            }
         }
     }
 

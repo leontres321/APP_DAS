@@ -68,9 +68,10 @@ public class kamikaze extends EnemigoVertical{
         CircleShape shape = new CircleShape();
         shape.setRadius(16 / MainGame.PPM);
         fdef.filter.categoryBits = MainGame.KAMIKAZE_BIT;
-        fdef.filter.maskBits = MainGame.AVION_BIT;
+        fdef.filter.maskBits = MainGame.AVION_BIT | MainGame.BALA_BIT;
         fdef.shape = shape;
         b2body.createFixture(fdef);
         b2body.createFixture(fdef).setUserData(this);
+        b2body.setLinearVelocity(0,1);
     }
 }

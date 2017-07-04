@@ -96,6 +96,7 @@ public class PlayScreen implements Screen {
             fdef.filter.categoryBits = MainGame.MURALLA_BIT;
             fdef.filter.maskBits = MainGame.AVION_BIT;
             fdef.shape = shape;
+            fdef.friction = 0;
             body.createFixture(fdef);
         }
 
