@@ -5,29 +5,8 @@
         jar="C:\Users\Trevor\Desktop\Libgdx\APP\core\build\libs\core-1.0.jar"
         jumboMode="false"
         revision="25.0.2"
-        sha1="635c6df93721f0af4cb37287c9084741f2c97548">
+        sha1="8c7772e3f5aa47724fd1c34fb881c4e5ba079f84">
         <dex dex="C:\Users\Trevor\Desktop\Libgdx\APP\android\build\intermediates\pre-dexed\debug\core-1.0_9f592d02aed67a8217a0fbca2b47609b1a8decb4.jar" />
-    </item>
-    <item
-        jar="C:\Users\Trevor\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-box2d\1.9.6\c249ef4060a4fada952f278455c8f7b9cba3c18a\gdx-box2d-1.9.6.jar"
-        jumboMode="false"
-        revision="25.0.2"
-        sha1="c249ef4060a4fada952f278455c8f7b9cba3c18a">
-        <dex dex="C:\Users\Trevor\Desktop\Libgdx\APP\android\build\intermediates\pre-dexed\debug\gdx-box2d-1.9.6_fb149e79748b1b5c21901d1fdbeba521f507d807.jar" />
-    </item>
-    <item
-        jar="C:\Users\Trevor\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx\1.9.6\47d1e9b890e364ec28f128e9bb3b9a12a94c164\gdx-1.9.6.jar"
-        jumboMode="false"
-        revision="25.0.2"
-        sha1="047d1e9b890e364ec28f128e9bb3b9a12a94c164">
-        <dex dex="C:\Users\Trevor\Desktop\Libgdx\APP\android\build\intermediates\pre-dexed\debug\gdx-1.9.6_ab9b7c3fbe669107cea8487abe2b27edbf938628.jar" />
-    </item>
-    <item
-        jar="C:\Users\Trevor\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-android\1.9.6\57c2831c870743712b808384187ea856e541878f\gdx-backend-android-1.9.6.jar"
-        jumboMode="false"
-        revision="25.0.2"
-        sha1="57c2831c870743712b808384187ea856e541878f">
-        <dex dex="C:\Users\Trevor\Desktop\Libgdx\APP\android\build\intermediates\pre-dexed\debug\gdx-backend-android-1.9.6_52319f5cfa7cff1d2c8db26c328994c8d80163e0.jar" />
     </item>
 
 </items>

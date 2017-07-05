@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="15" height="100" tilewidth="32" tileheight="32" nextobjectid="1">
- <tileset firstgid="1" source="tiles.tsx"/>
- <layer name="Capa de Patrones 1" width="15" height="100">
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="20" height="200" tilewidth="32" tileheight="32" nextobjectid="5">
+ <tileset firstgid="1" source="tiles2.tsx"/>
+ <layer name="Capa de Patrones 1" width="20" height="200">
   <data encoding="base64" compression="zlib">
-   eJzt1zESglAQA9C9AY3WcA2lFduvx9Baajg6YRgqf/GJCAukeB0ZZoENUJtZRmonHHuBK5TEeW5QwZ3IBnjA84c59+YFbzL7gZrMNjbtmRGR9aR2dqxPUjs71ifB0jr7iH1ygjOZzaFwMMPW6f0pc9Auz0f/F9/UUz5oz49j7CEmO/YQkw029NC/5/PWKexe9YoFrpdH3u6hxOmbZn86SaBwdg==
+   eJzt2zsOgkAQgOE9BNaYeAq1RVv0GFhrrUd3KDYhJkv2McgAf/F1Mom689gxVs65nTgUOIqTOIta7AvjNeIiroVxvFbcxF0pHuzy51ArnuY57HEOsSadeCjGe4qXUqy+L73FRyleo/zZtQa+P4RVrnw2GtKYjQBgarl9PfRcbl8PPZfb1zXnAcCClDlluKsJvSZlTmFXA8AS7m34FdP3UtD3gOnF1vLY/I6t5eQ3YIPl35h67JSQgvO8bFbul9xpsGaVcrzawHvaurHel1PPxnpfTj0b633UM6DcHPMTMzewHTH5nlKHYvI95R5HvgPzYG9im5X92pJMNd9q5Ynvd/yfDvgvjdowrMkad19fk7/bdj5E
   </data>
  </layer>
+ <objectgroup name="Paredes">
+  <object id="1" name="Izq" x="-8" y="0" width="19" height="6403"/>
+  <object id="3" name="Der" x="588" y="0" width="14" height="6401"/>
+  <object id="4" name="Boss" x="1" y="565" width="625" height="12"/>
+ </objectgroup>
 </map>

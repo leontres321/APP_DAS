@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="30" height="100" tilewidth="32" tileheight="32" nextobjectid="1">
+<map version="2017.05.26" orientation="orthogonal" renderorder="right-down" width="30" height="100" tilewidth="32" tileheight="32" nextobjectid="8">
  <tileset firstgid="1" source="tiles2.tsx"/>
  <layer name="Capa de Patrones 1" width="30" height="100">
   <data encoding="base64" compression="zlib">
    eJztmrESwiAMhvsQurjoa9Su1btO6mPUuc710YUtxx0kYAK0ZPincve1BPKH0KHruqmA7kYnAfVGV6PB8/wlxB2NboHvmoS4D6Nn4Lso3NnozfxeFO5i9CnAXY2+glxsDXLp4HCxNcils8PF1mDu+O6FOxfiLoW4a2PxbZUr4TcUroTfYLIe8K/f2Dx/RMa4nsPhATbPX5Axrufk8AAr13Na3EetcSn7QIJL2QeYYnMe1zzH5jwubmzOa3E952b2hbhjY/O8Ry6We6W4WO4NcWFNxF1zhriwJuKuOUNcWBNx9zikexk+SfcyfMpVx8bEV7k80r5K3vhuuW5P4Zaa561yU7yZg5vizRxenuLNseNrim+s9JyiXOXWzw3dc0Iu99krdM8Judxnr9A9J+RK3C+XiK9yletKupb3caVr+drmWbl1c6mexs2lehr3PTfV0yhjthDfWC6shaRzJOxfwVpIOkfC/lXOf75K96+Uq1zl1snF/rX9AcfPZSA=
   </data>
  </layer>
+ <objectgroup name="Capa de Objetos 1">
+  <object id="3" name="Izq" x="-19" y="-16" width="35" height="3199"/>
+  <object id="4" name="Der" x="588" y="-3" width="31" height="3198"/>
+  <object id="7" name="Boss" x="0" y="673" width="642" height="32"/>
+ </objectgroup>
 </map>
